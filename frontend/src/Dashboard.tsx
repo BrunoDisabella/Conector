@@ -5,7 +5,7 @@ import axios from 'axios';
 import { LogOut, Key, Webhook, Smartphone, AlertCircle, Save } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3003';
 
 const Dashboard = () => {
     const { session, signOut } = useAuth();

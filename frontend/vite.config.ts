@@ -7,18 +7,18 @@ export default defineConfig({
     server: {
         proxy: {
             '/socket.io': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:3003',
                 ws: true,
                 changeOrigin: true,
                 secure: false
             },
             '/api': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:3003',
                 changeOrigin: true,
                 secure: false
             },
             '/session': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:3003',
                 changeOrigin: true,
                 secure: false
             }
