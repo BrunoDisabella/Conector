@@ -5,7 +5,7 @@ import axios from 'axios';
 import { LogOut, Key, Webhook, Smartphone, AlertCircle, Save } from 'lucide-react';
 import { io, Socket } from 'socket.io-client';
 
-const API_URL = 'http://localhost:3001'; // Direct backend URL
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
 
 const Dashboard = () => {
     const { session, signOut } = useAuth();
@@ -59,14 +59,15 @@ const Dashboard = () => {
     const initSocket = () => {
         if (!session || socketRef.current) return;
 
-        addLog("Initializing Socket.IO DIRECT to http://localhost:3001...");
+        addLog(`Initializing Socket.IO to ${API_URL}...`);
 
         // Direct connection - No Proxy
-        const socket = io('http://localhost:3001', {
+        const socket = io(API_URL, {
             transports: ['websocket', 'polling'],
             autoConnect: true,
             reconnection: true,
-            reconnectionAttempts: 10
+            reconnectionAttempts: 10,
+            path: '/socket.io' // Explicit path for Nginx compatibility
         });
 
         socketRef.current = socket;
