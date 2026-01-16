@@ -17,6 +17,14 @@ const supabaseAuth = async (req: any, res: any, next: any) => {
     next();
 };
 
+// HTTP Polling Route for Status
+router.get('/status', supabaseAuth, async (req: any, res: any) => {
+    const userId = req.user.id;
+    // @ts-ignore
+    const status = clientManager.getStatus(userId);
+    res.json(status);
+});
+
 // HTTP Polling Route for QR (Fallback)
 router.get('/qr', supabaseAuth, async (req: any, res: any) => {
     const userId = req.user.id;
