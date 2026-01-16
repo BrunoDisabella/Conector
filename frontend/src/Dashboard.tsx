@@ -67,7 +67,10 @@ const Dashboard = () => {
             autoConnect: true,
             reconnection: true,
             reconnectionAttempts: 10,
-            path: '/socket.io' // Explicit path for Nginx compatibility
+            path: '/socket.io', // Explicit path for Nginx compatibility
+            auth: {
+                token: session.access_token
+            }
         });
 
         socketRef.current = socket;
