@@ -114,19 +114,30 @@ const Dashboard = () => {
         });
     };
 
-    // Fallback: Poll for QR every 2 seconds if not connected
+    // Fallback: Poll for QR and Status every 2 seconds if not connected
     useEffect(() => {
-        if (!session || status === 'CONNECTED') return;
+        if (!session) return;
 
         const interval = setInterval(async () => {
+            if (status === 'CONNECTED') return; // Stop polling if connected
+
             try {
-                const res = await axios.get(`${API_URL}/session/qr`, {
+                // Check Status
+                const statusRes = await axios.get(`${API_URL}/session/status`, {
                     headers: { Authorization: `Bearer ${session.access_token}` }
                 });
-                if (res.data.qr) {
-                    setQr(res.data.qr);
-                    // Only log if we didn't have it before (avoid spam)
-                    // addLog("QR Fetched via HTTP Polling"); 
+                if (statusRes.data.status === 'CONNECTED') {
+                    setStatus('CONNECTED');
+                    setQr(null);
+                    return;
+                }
+
+                // Check QR
+                const qrRes = await axios.get(`${API_URL}/session/qr`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (qrRes.data.qr) {
+                    setQr(qrRes.data.qr);
                 }
             } catch (e) {
                 // Silent fail for polling

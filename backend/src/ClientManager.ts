@@ -51,6 +51,16 @@ export class ClientManager {
     return this.lastQr.get(userId);
   }
 
+  public getStatus(userId: string): { status: 'CONNECTED' | 'DISCONNECTED' | 'CONNECTING' } {
+    const client = this.clients.get(userId);
+    if (client) {
+      // We assume if it's in the map, it's connected or connecting. 
+      // Can be refined later with client.info checks
+      return { status: 'CONNECTED' };
+    }
+    return { status: 'DISCONNECTED' };
+  }
+
   // Socket Helper
   private emitToUser(userId: string, event: string, data: any) {
     this.io.to(userId).emit(event, data);
